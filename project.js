@@ -1,6 +1,8 @@
 angular.module('project', ['firebase'])
 
-	.controller('MainController', ['$scope', function ($scope) {
+	.constant('REMOTE_SERVER', 'https://sandbox-auth.firebaseio.com')
+
+	.controller('MainController', ['$scope', 'REMOTE_SERVER', function ($scope, REMOTE_SERVER) {
 	
 		$scope.output = 'Hello Controller !!!'
 	
