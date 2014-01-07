@@ -4,7 +4,11 @@ angular.module('project', ['firebase'])
 
 	.controller('MainController', ['$scope', 'REMOTE_SERVER', '$firebaseAuth', function ($scope, REMOTE_SERVER, $firebaseAuth) {
 
-		var auth = $firebaseAuth(new Firebase(REMOTE_SERVER));
+		var auth = $firebaseAuth(new Firebase(REMOTE_SERVER), {
+			'callback' : function() {
+				$scope.output = auth.user;
+			}
+		});
 
 		$scope.login = function() {
 			auth.$login('password', {
@@ -15,10 +19,6 @@ angular.module('project', ['firebase'])
 
 		$scope.logout = function() {
 			auth.$logout();
-		};
-
-		$scope.refresh = function() {
-			$scope.output = auth.user;
 		};
 
 	}]);
