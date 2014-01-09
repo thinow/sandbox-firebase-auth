@@ -2,23 +2,26 @@ angular.module('project', ['firebase'])
 
 	.constant('REMOTE_SERVER', 'https://sandbox-auth.firebaseio.com')
 
-	.controller('MainController', ['$scope', 'REMOTE_SERVER', '$firebaseAuth', '$log', function ($scope, REMOTE_SERVER, $firebaseAuth, $log) {
+	.controller('MainController', ['$rootScope', '$scope', 'REMOTE_SERVER', '$firebaseAuth', '$log', function ($rootScope, $scope, REMOTE_SERVER, $firebaseAuth, $log) {
 
-		var auth = $firebaseAuth(new Firebase(REMOTE_SERVER), {
-			'callback' : function() {
-				$log.info('Refresh : ' + (auth.user != null ? auth.user.email : '(no-user)'));
-				$scope.output = auth.user;
-			}
-		});
+		var auth = $firebaseAuth(new Firebase(REMOTE_SERVER));
 
 		$scope.login = function() {
-			$log.info('Login');
 			auth.$login('twitter');
 		};
 
 		$scope.logout = function() {
-			$log.info('Logout');
 			auth.$logout();
 		};
+
+		$rootScope.$on("$firebaseAuth:login", function(e, user) {
+			$log.info('Login : ' + user.displayName);
+			$scope.output = user;
+		});
+
+		$rootScope.$on("$firebaseAuth:logout", function(e, user) {
+			$log.info('Logout');
+			$scope.output = null;
+		});
 
 	}]);
