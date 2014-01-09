@@ -12,8 +12,9 @@
 </head>
 <body ng-controller="MainController">
 	<h2>Firebase Auth</h2>
-	<pre>{{ output | json }}</pre>
-	<button ng-click="login()">Login</button>
+	<button ng-click="login('twitter')">Login Twitter</button>
+	<button ng-click="login('github')">Login Github</button>
 	<button ng-click="logout()">Logout</button>
+	<pre>{{ output | json }}</pre>
 </body>
 </html>

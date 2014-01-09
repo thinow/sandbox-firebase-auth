@@ -6,8 +6,8 @@ angular.module('project', ['firebase'])
 
 		var auth = $firebaseAuth(new Firebase(REMOTE_SERVER));
 
-		$scope.login = function() {
-			auth.$login('twitter');
+		$scope.login = function(mode) {
+			auth.$login(mode);
 		};
 
 		$scope.logout = function() {
