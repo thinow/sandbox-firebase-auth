@@ -13,10 +13,7 @@ angular.module('project', ['firebase'])
 
 		$scope.login = function() {
 			$log.info('Login');
-			auth.$login('password', {
-				  email: 'mail@mail.com',
-				  password: 'password'
-			});
+			auth.$login('twitter');
 		};
 
 		$scope.logout = function() {
