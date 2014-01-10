@@ -28,6 +28,9 @@ angular.module('project', ['firebase'])
 		});
 
 		$scope.sendData = function() {
+			var publicRef = new Firebase(REMOTE_SERVER + '/public');
+			publicRef.set('Public at ' + new Date().toLocaleString());
+
 			var ref = new Firebase(REMOTE_SERVER + '/users/' + $scope.output.uid);
 			ref.set('Bazinga!');
 		};
