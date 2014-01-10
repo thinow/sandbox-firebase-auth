@@ -17,11 +17,19 @@ angular.module('project', ['firebase'])
 		$rootScope.$on("$firebaseAuth:login", function(e, user) {
 			$log.info('Login : ' + user.displayName);
 			$scope.output = user;
+			
+			var ref = new Firebase(REMOTE_SERVER + '/users/' + user.uid);
+			ref.set(new Date().toLocaleString());
 		});
 
 		$rootScope.$on("$firebaseAuth:logout", function(e, user) {
 			$log.info('Logout');
 			$scope.output = null;
 		});
+
+		$scope.sendData = function() {
+			var ref = new Firebase(REMOTE_SERVER + '/users/' + $scope.output.uid);
+			ref.set('Bazinga!');
+		};
 
 	}]);
