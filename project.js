@@ -2,7 +2,7 @@ angular.module('project', ['firebase'])
 
 	.constant('REMOTE_SERVER', 'https://sandbox-auth.firebaseio.com')
 
-	.controller('MainController', ['$rootScope', '$scope', 'REMOTE_SERVER', '$firebaseAuth', '$log', function ($rootScope, $scope, REMOTE_SERVER, $firebaseAuth, $log) {
+	.controller('MainController', ['$rootScope', '$scope', 'REMOTE_SERVER', '$firebaseAuth', '$firebase', '$log', function ($rootScope, $scope, REMOTE_SERVER, $firebaseAuth, $firebase, $log) {
 
 		var auth = $firebaseAuth(new Firebase(REMOTE_SERVER));
 
@@ -18,8 +18,7 @@ angular.module('project', ['firebase'])
 			$log.info('Login : ' + user.displayName);
 			$scope.output = user;
 			
-			var ref = new Firebase(REMOTE_SERVER + '/users/' + user.uid);
-			ref.set(new Date().toLocaleString());
+			$scope.findData('/users/' + user.uid).$set(new Date().toLocaleString());
 		});
 
 		$rootScope.$on("$firebaseAuth:logout", function(e, user) {
@@ -28,11 +27,13 @@ angular.module('project', ['firebase'])
 		});
 
 		$scope.sendData = function() {
-			var publicRef = new Firebase(REMOTE_SERVER + '/public');
-			publicRef.set('Public at ' + new Date().toLocaleString());
+			$scope.findData('/public').$set('Public at ' + new Date().toLocaleString());
+			$scope.findData('/users/' + $scope.output.uid).$set(new Date().toLocaleString());
+		};
 
-			var ref = new Firebase(REMOTE_SERVER + '/users/' + $scope.output.uid);
-			ref.set('Bazinga!');
+		$scope.findData = function(link, value) {
+			var ref = new Firebase(REMOTE_SERVER + link);
+			return $firebase(ref);
 		};
 
 	}]);
